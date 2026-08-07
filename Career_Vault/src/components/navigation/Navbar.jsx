@@ -9,7 +9,11 @@ import {
 import { useTheme } from "../../context/ThemeContext";
 
 const Navbar = () => {
-  const { theme, darkMode, toggleTheme } = useTheme();
+  const {
+  theme,
+  darkMode,
+  toggleTheme,
+} = useTheme();
 
   return (
     <header
@@ -77,46 +81,32 @@ const Navbar = () => {
 
         </div>
 
-        {/* Add Button */}
+        
 
-        <button
-          className="
-            flex
-            items-center
-            gap-2
-            rounded-2xl
-            px-6
-            py-3
-            font-medium
-            text-white
-            transition
-            hover:scale-105
-          "
-          style={{
-            background: theme.colors.primary,
-          }}
-        >
-          <Plus size={18} />
-          Add Application
-        </button>
+      
 
         {/* Notification */}
 
-        <button
-          className="
-            flex
-            h-12
-            w-12
-            items-center
-            justify-center
-            rounded-full
-          "
-          style={{
-            background: theme.colors.card,
-          }}
-        >
-          <Bell size={20} />
-        </button>
+       <button
+  className="
+    flex
+    h-12
+    w-12
+    items-center
+    justify-center
+    rounded-full
+  "
+  style={{
+    background: theme.colors.card,
+  }}
+>
+  <Bell
+    size={20}
+    style={{
+      color: theme.colors.text,
+    }}
+  />
+</button>
 
         {/* Theme */}
 

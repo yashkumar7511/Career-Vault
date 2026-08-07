@@ -1,10 +1,10 @@
-import { TrendingUp } from "lucide-react";
+
 import { useTheme } from "../../context/ThemeContext";
+
 
 const StatsCard = ({
   title,
   value,
-  change,
   icon: Icon,
   color,
 }) => {
@@ -37,16 +37,7 @@ const StatsCard = ({
           <Icon size={26} />
         </div>
 
-        <div
-          className="flex items-center gap-1 rounded-full px-3 py-1 text-sm font-medium"
-          style={{
-            background: `${color}20`,
-            color,
-          }}
-        >
-          <TrendingUp size={16} />
-          {change}
-        </div>
+        
 
       </div>
 
