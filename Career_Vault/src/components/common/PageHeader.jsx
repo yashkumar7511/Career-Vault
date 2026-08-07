@@ -10,9 +10,7 @@ const PageHeader = ({
 
   return (
     <div className="mb-8 flex items-center justify-between">
-
       <div>
-
         <h1
           className="text-4xl font-bold"
           style={{
@@ -30,22 +28,12 @@ const PageHeader = ({
         >
           {subtitle}
         </p>
-
       </div>
 
       {buttonText && (
         <button
           onClick={onButtonClick}
-          className="
-            rounded-2xl
-            px-6
-            py-3
-            font-medium
-            text-white
-            transition
-            duration-300
-            hover:scale-105
-          "
+          className="rounded-2xl px-6 py-3 text-white transition hover:scale-105"
           style={{
             background: theme.colors.primary,
           }}
@@ -53,7 +41,6 @@ const PageHeader = ({
           {buttonText}
         </button>
       )}
-
     </div>
   );
 };

@@ -4,6 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 
 import Dashboard from "../pages/Dashboard";
 import Applications from "../pages/Applications";
+import Companies from "../pages/Companies";
 import Analytics from "../pages/Analytics";
 import Calendar from "../pages/Calendar";
 import Wishlist from "../pages/Wishlist";
@@ -16,6 +17,7 @@ const AppRoutes = () => {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/applications" element={<Applications />} />
+        <Route path="/companies" element={<Companies />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/wishlist" element={<Wishlist />} />

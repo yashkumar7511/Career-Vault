@@ -1,55 +1,191 @@
-import { FaBell } from "react-icons/fa";
+import {
+  Bell,
+  Moon,
+  Sun,
+  Search,
+  Plus,
+} from "lucide-react";
+
+import { useTheme } from "../../context/ThemeContext";
 
 const Navbar = () => {
+  const { theme, darkMode, toggleTheme } = useTheme();
+
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/80 backdrop-blur">
+    <header
+      className="flex items-center justify-between border-b px-10 py-5"
+      style={{
+        background: theme.colors.background,
+        borderColor: theme.colors.border,
+      }}
+    >
+      {/* Left */}
 
-      <div className="flex h-20 items-center justify-between px-8">
+      <div>
 
-        <div>
+        <h1
+          className="text-4xl font-bold"
+          style={{
+            color: theme.colors.text,
+          }}
+        >
+          Dashboard
+        </h1>
 
-          <h2 className="text-3xl font-bold">
-            Dashboard
-          </h2>
+        <p
+          className="mt-1 text-xl"
+          style={{
+            color: theme.colors.secondaryText,
+          }}
+        >
+          Welcome back 👋
+        </p>
 
-          <p className="text-slate-400">
-            Welcome back 👋
-          </p>
+      </div>
+
+      {/* Right */}
+
+      <div className="flex items-center gap-6">
+
+        {/* Search */}
+
+        <div className="relative">
+
+          <Search
+            size={18}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+          />
+
+          <input
+            type="text"
+            placeholder="Search applications..."
+            className="
+              w-80
+              rounded-2xl
+              border
+              py-3
+              pl-12
+              pr-5
+              outline-none
+            "
+            style={{
+              background: theme.colors.card,
+              borderColor: theme.colors.border,
+              color: theme.colors.text,
+            }}
+          />
 
         </div>
 
-        <div className="flex items-center gap-5">
+        {/* Add Button */}
 
-          <button className="rounded-full bg-slate-900 p-4 transition hover:bg-orange-500">
+        <button
+          className="
+            flex
+            items-center
+            gap-2
+            rounded-2xl
+            px-6
+            py-3
+            font-medium
+            text-white
+            transition
+            hover:scale-105
+          "
+          style={{
+            background: theme.colors.primary,
+          }}
+        >
+          <Plus size={18} />
+          Add Application
+        </button>
 
-            <FaBell size={18} />
+        {/* Notification */}
 
-          </button>
+        <button
+          className="
+            flex
+            h-12
+            w-12
+            items-center
+            justify-center
+            rounded-full
+          "
+          style={{
+            background: theme.colors.card,
+          }}
+        >
+          <Bell size={20} />
+        </button>
 
-          <div className="flex items-center gap-3">
+        {/* Theme */}
 
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-500 font-bold text-lg">
-              Y
-            </div>
+        <button
+          onClick={toggleTheme}
+          className="
+            flex
+            h-12
+            w-12
+            items-center
+            justify-center
+            rounded-full
+            text-white
+          "
+          style={{
+            background: theme.colors.primary,
+          }}
+        >
+          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
 
-            <div>
+        {/* Avatar */}
 
-              <h4 className="font-semibold">
-                Yash
-              </h4>
+        <div className="flex items-center gap-4">
 
-              <p className="text-sm text-slate-400">
-                Frontend Developer
-              </p>
+          <div
+            className="
+              flex
+              h-12
+              w-12
+              items-center
+              justify-center
+              rounded-full
+              text-lg
+              font-bold
+              text-white
+            "
+            style={{
+              background: theme.colors.primary,
+            }}
+          >
+            Y
+          </div>
 
-            </div>
+          <div>
+
+            <h3
+              className="font-semibold"
+              style={{
+                color: theme.colors.text,
+              }}
+            >
+              Yash
+            </h3>
+
+            <p
+              className="text-sm"
+              style={{
+                color: theme.colors.secondaryText,
+              }}
+            >
+              Frontend Developer
+            </p>
 
           </div>
 
         </div>
 
       </div>
-
     </header>
   );
 };
