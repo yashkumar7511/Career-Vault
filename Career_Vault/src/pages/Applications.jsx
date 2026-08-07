@@ -1,5 +1,11 @@
+import ApplicationTable from "../components/applications/ApplicationTable";
+
 const Applications = () => {
-  return <h1>Applications</h1>;
+  return (
+    <div className="p-10">
+      <ApplicationTable />
+    </div>
+  );
 };
 
 export default Applications;
