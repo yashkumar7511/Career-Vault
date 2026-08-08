@@ -9,20 +9,65 @@ import {
 } from "recharts";
 
 import { ChevronDown } from "lucide-react";
-import { useTheme } from "../../context/ThemeContext";
 
-const data = [
-  { month: "Jan", applications: 5 },
-  { month: "Feb", applications: 14 },
-  { month: "Mar", applications: 12 },
-  { month: "Apr", applications: 20 },
-  { month: "May", applications: 18 },
-  { month: "Jun", applications: 28 },
-  { month: "Jul", applications: 35 },
-];
+import { useMemo, useState } from "react";
+
+import { useTheme } from "../../context/ThemeContext";
+import { useApplications } from "../../context/ApplicationContext";
 
 const ApplicationChart = () => {
   const { theme } = useTheme();
+  const { applications } = useApplications();
+
+  const currentYear = new Date().getFullYear();
+
+  const [selectedYear, setSelectedYear] = useState(
+    currentYear
+  );
+
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  // Create monthly application data
+  const data = useMemo(() => {
+    return months.map((month, index) => {
+      const applicationCount = applications.filter(
+        (application) => {
+          const date =
+            application.appliedDate ||
+            application.date;
+
+          if (!date) return false;
+
+          const parsedDate = parseApplicationDate(date);
+
+          if (!parsedDate) return false;
+
+          return (
+            parsedDate.year === selectedYear &&
+            parsedDate.month === index
+          );
+        }
+      ).length;
+
+      return {
+        month,
+        applications: applicationCount,
+      };
+    });
+  }, [applications, selectedYear]);
 
   return (
     <div
@@ -56,24 +101,70 @@ const ApplicationChart = () => {
           </p>
         </div>
 
-        <button
-          className="flex items-center gap-2 rounded-xl border px-4 py-2 text-sm transition hover:opacity-80"
-          style={{
-            borderColor: theme.colors.border,
-            color: theme.colors.text,
-          }}
-        >
-          This Year
-          <ChevronDown size={16} />
-        </button>
+        {/* Year Selector */}
 
+        <div className="relative">
+
+          <select
+            value={selectedYear}
+            onChange={(e) =>
+              setSelectedYear(
+                Number(e.target.value)
+              )
+            }
+            className="
+              appearance-none
+              rounded-xl
+              border
+              bg-transparent
+              py-2
+              pl-4
+              pr-10
+              text-sm
+              outline-none
+              cursor-pointer
+            "
+            style={{
+              borderColor: theme.colors.border,
+              color: theme.colors.text,
+            }}
+          >
+            <option value={currentYear}>
+              This Year
+            </option>
+
+            <option value={currentYear - 1}>
+              {currentYear - 1}
+            </option>
+
+            <option value={currentYear - 2}>
+              {currentYear - 2}
+            </option>
+          </select>
+
+          <ChevronDown
+            size={16}
+            className="
+              pointer-events-none
+              absolute
+              right-3
+              top-1/2
+              -translate-y-1/2
+            "
+            color={theme.colors.text}
+          />
+
+        </div>
       </div>
 
       {/* Chart */}
 
       <div className="h-[420px]">
 
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+        >
 
           <LineChart
             data={data}
@@ -84,6 +175,7 @@ const ApplicationChart = () => {
               bottom: 0,
             }}
           >
+
             <CartesianGrid
               strokeDasharray="4 4"
               stroke={theme.colors.border}
@@ -100,6 +192,7 @@ const ApplicationChart = () => {
             />
 
             <YAxis
+              allowDecimals={false}
               tick={{
                 fill: theme.colors.secondaryText,
                 fontSize: 13,
@@ -113,6 +206,7 @@ const ApplicationChart = () => {
                 background: theme.colors.card,
                 border: `1px solid ${theme.colors.border}`,
                 borderRadius: "14px",
+                color: theme.colors.text,
               }}
             />
 
@@ -135,9 +229,44 @@ const ApplicationChart = () => {
         </ResponsiveContainer>
 
       </div>
-
     </div>
   );
+};
+
+
+// Converts both:
+// "12 Aug 2026"
+// "2026-08-12"
+// into { year, month }
+
+const parseApplicationDate = (date) => {
+  if (!date) return null;
+
+  // YYYY-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    const [year, month] = date
+      .split("-")
+      .map(Number);
+
+    return {
+      year,
+      month: month - 1,
+    };
+  }
+
+  // Example:
+  // 12 Aug 2026
+
+  const parsed = new Date(date);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+
+  return {
+    year: parsed.getFullYear(),
+    month: parsed.getMonth(),
+  };
 };
 
 export default ApplicationChart;

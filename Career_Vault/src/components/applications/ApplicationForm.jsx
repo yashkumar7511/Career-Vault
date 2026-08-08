@@ -1,6 +1,9 @@
 import { useTheme } from "../../context/ThemeContext";
 
-const ApplicationForm = () => {
+const ApplicationForm = ({
+  formData,
+  handleChange,
+}) => {
   const { theme } = useTheme();
 
   const inputStyle = {
@@ -25,9 +28,13 @@ const ApplicationForm = () => {
         </label>
 
         <input
+          required
+          name="company"
           type="text"
+          value={formData.company}
+          onChange={handleChange}
           placeholder="Google"
-          className="w-full rounded-xl border p-3 outline-none transition"
+          className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
         />
       </div>
@@ -45,9 +52,13 @@ const ApplicationForm = () => {
         </label>
 
         <input
+          required
+          name="role"
           type="text"
+          value={formData.role}
+          onChange={handleChange}
           placeholder="Frontend Developer"
-          className="w-full rounded-xl border p-3 outline-none transition"
+          className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
         />
       </div>
@@ -65,9 +76,13 @@ const ApplicationForm = () => {
         </label>
 
         <input
+          required
+          name="location"
           type="text"
+          value={formData.location}
+          onChange={handleChange}
           placeholder="Bengaluru"
-          className="w-full rounded-xl border p-3 outline-none transition"
+          className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
         />
       </div>
@@ -85,9 +100,11 @@ const ApplicationForm = () => {
         </label>
 
         <select
+          name="status"
+          value={formData.status}
+          onChange={handleChange}
           className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
-          defaultValue="Applied"
         >
           <option>Applied</option>
           <option>Interview</option>
@@ -109,9 +126,11 @@ const ApplicationForm = () => {
         </label>
 
         <select
+          name="workMode"
+          value={formData.workMode}
+          onChange={handleChange}
           className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
-          defaultValue="Remote"
         >
           <option>Remote</option>
           <option>Hybrid</option>
@@ -132,7 +151,55 @@ const ApplicationForm = () => {
         </label>
 
         <input
+          required
+          name="appliedDate"
           type="date"
+          value={formData.appliedDate}
+          onChange={handleChange}
+          className="w-full rounded-xl border p-3 outline-none"
+          style={inputStyle}
+        />
+      </div>
+
+      {/* Interview Date */}
+
+      <div>
+        <label
+          className="mb-2 block font-medium"
+          style={{
+            color: theme.colors.text,
+          }}
+        >
+          Interview Date
+        </label>
+
+        <input
+          name="interviewDate"
+          type="date"
+          value={formData.interviewDate || ""}
+          onChange={handleChange}
+          className="w-full rounded-xl border p-3 outline-none"
+          style={inputStyle}
+        />
+      </div>
+
+      {/* Interview Time */}
+
+      <div>
+        <label
+          className="mb-2 block font-medium"
+          style={{
+            color: theme.colors.text,
+          }}
+        >
+          Interview Time
+        </label>
+
+        <input
+          name="interviewTime"
+          type="time"
+          value={formData.interviewTime || ""}
+          onChange={handleChange}
           className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
         />
@@ -147,11 +214,14 @@ const ApplicationForm = () => {
             color: theme.colors.text,
           }}
         >
-          Salary
+          Salary (Optional)
         </label>
 
         <input
+          name="salary"
           type="text"
+          value={formData.salary}
+          onChange={handleChange}
           placeholder="18 LPA"
           className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
@@ -160,7 +230,7 @@ const ApplicationForm = () => {
 
       {/* Skills */}
 
-      <div>
+      <div className="md:col-span-2">
         <label
           className="mb-2 block font-medium"
           style={{
@@ -171,7 +241,10 @@ const ApplicationForm = () => {
         </label>
 
         <input
+          name="skills"
           type="text"
+          value={formData.skills}
+          onChange={handleChange}
           placeholder="React, JavaScript, Tailwind"
           className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
@@ -183,7 +256,7 @@ const ApplicationForm = () => {
             color: theme.colors.secondaryText,
           }}
         >
-          Separate skills with commas.
+          Separate multiple skills with commas.
         </p>
       </div>
 
@@ -200,7 +273,10 @@ const ApplicationForm = () => {
         </label>
 
         <input
+          name="jobUrl"
           type="url"
+          value={formData.jobUrl}
+          onChange={handleChange}
           placeholder="https://company.com/jobs"
           className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
@@ -220,7 +296,10 @@ const ApplicationForm = () => {
         </label>
 
         <textarea
+          name="notes"
           rows={5}
+          value={formData.notes}
+          onChange={handleChange}
           placeholder="Write your notes..."
           className="w-full resize-none rounded-xl border p-3 outline-none"
           style={inputStyle}

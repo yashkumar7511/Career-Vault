@@ -6,11 +6,15 @@ import AddApplicationModal from "./AddApplicationModal";
 
 const SearchBar = () => {
   const { theme } = useTheme();
+
   const [showModal, setShowModal] = useState(false);
 
   return (
     <>
+      {/* Add Application Button */}
+
       <button
+        type="button"
         onClick={() => setShowModal(true)}
         className="
           flex
@@ -33,11 +37,12 @@ const SearchBar = () => {
         Add Application
       </button>
 
-      {showModal && (
-        <AddApplicationModal
-          onClose={() => setShowModal(false)}
-        />
-      )}
+      {/* Add Application Modal */}
+
+      <AddApplicationModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </>
   );
 };

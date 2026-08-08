@@ -50,12 +50,6 @@ const Sidebar = () => {
        
 
         <NavItem
-          to="/analytics"
-          icon={BarChart3}
-          title="Analytics"
-        />
-
-        <NavItem
           to="/calendar"
           icon={CalendarDays}
           title="Calendar"

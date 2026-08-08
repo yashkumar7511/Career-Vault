@@ -1,42 +1,31 @@
-import { ArrowUpDown } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 
-const SortDropdown = () => {
+const SortDropdown = ({ sortBy, onSortChange }) => {
   const { theme } = useTheme();
 
   return (
-    <div className="relative">
-      <select
-        className="
-          appearance-none
-          rounded-2xl
-          border
-          py-3
-          pl-4
-          pr-12
-          outline-none
-          transition-all
-          duration-300
-        "
-        style={{
-          background: theme.colors.card,
-          color: theme.colors.text,
-          borderColor: theme.colors.border,
-        }}
-      >
-        <option>Newest First</option>
-        <option>Oldest First</option>
-        <option>Company (A-Z)</option>
-        <option>Company (Z-A)</option>
-        <option>Status</option>
-      </select>
-
-      <ArrowUpDown
-        size={18}
-        className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2"
-        color={theme.colors.secondaryText}
-      />
-    </div>
+    <select
+      value={sortBy}
+      onChange={(e) => onSortChange(e.target.value)}
+      className="
+        rounded-xl
+        border
+        px-4
+        py-3
+        outline-none
+        transition
+      "
+      style={{
+        background: theme.colors.card,
+        color: theme.colors.text,
+        borderColor: theme.colors.border,
+      }}
+    >
+      <option value="newest">Newest First</option>
+      <option value="oldest">Oldest First</option>
+      <option value="companyAZ">Company A-Z</option>
+      <option value="companyZA">Company Z-A</option>
+    </select>
   );
 };
 

@@ -10,16 +10,30 @@ import {
 } from "lucide-react";
 
 import { useTheme } from "../../context/ThemeContext";
+import { useApplications } from "../../context/ApplicationContext";
+
 import StatusBadge from "./StatusBadge";
 import ApplicationDetailsDrawer from "./ApplicationDetailsDrawer";
+import EditApplicationModal from "./EditApplicationModal";
+import DeleteModal from "./DeleteModal";
 
 const ApplicationRow = ({ application }) => {
   const { theme } = useTheme();
+  const { deleteApplication } = useApplications();
 
   const [showDetails, setShowDetails] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+
+  const handleDelete = () => {
+    deleteApplication(application.id);
+    setShowDelete(false);
+  };
 
   return (
     <>
+      {/* Application Card */}
+
       <div
         className="
           rounded-3xl
@@ -98,7 +112,6 @@ const ApplicationRow = ({ application }) => {
 
           <span className="flex items-center gap-2">
             <CalendarDays size={16} />
-
             {application.appliedDate || application.date}
           </span>
         </div>
@@ -139,7 +152,7 @@ const ApplicationRow = ({ application }) => {
             borderColor: theme.colors.border,
           }}
         >
-          {/* View Details */}
+          {/* View */}
 
           <button
             onClick={() => setShowDetails(true)}
@@ -158,6 +171,7 @@ const ApplicationRow = ({ application }) => {
           {/* Edit */}
 
           <button
+            onClick={() => setShowEdit(true)}
             className="rounded-xl p-3 transition hover:scale-110"
             style={{
               background: theme.colors.background,
@@ -173,6 +187,7 @@ const ApplicationRow = ({ application }) => {
           {/* Delete */}
 
           <button
+            onClick={() => setShowDelete(true)}
             className="rounded-xl p-3 transition hover:scale-110"
             style={{
               background: "#EF444420",
@@ -187,7 +202,7 @@ const ApplicationRow = ({ application }) => {
         </div>
       </div>
 
-      {/* Details Drawer */}
+      {/* View Details */}
 
       {showDetails && (
         <ApplicationDetailsDrawer
@@ -195,6 +210,22 @@ const ApplicationRow = ({ application }) => {
           onClose={() => setShowDetails(false)}
         />
       )}
+
+      {/* Edit Modal */}
+
+      <EditApplicationModal
+        isOpen={showEdit}
+        onClose={() => setShowEdit(false)}
+        application={application}
+      />
+
+      {/* Delete Modal */}
+
+      <DeleteModal
+        isOpen={showDelete}
+        onClose={() => setShowDelete(false)}
+        onDelete={handleDelete}
+      />
     </>
   );
 };

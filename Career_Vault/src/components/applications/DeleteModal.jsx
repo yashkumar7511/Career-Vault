@@ -1,7 +1,11 @@
 import { TriangleAlert, X } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
 
-const DeleteModal = ({ isOpen, onClose }) => {
+const DeleteModal = ({
+  isOpen,
+  onClose,
+  onDelete,
+}) => {
   const { theme } = useTheme();
 
   if (!isOpen) return null;
@@ -14,6 +18,7 @@ const DeleteModal = ({ isOpen, onClose }) => {
           background: theme.colors.card,
           borderColor: theme.colors.border,
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
 
@@ -25,7 +30,10 @@ const DeleteModal = ({ isOpen, onClose }) => {
               background: theme.colors.background,
             }}
           >
-            <X size={20} color={theme.colors.text} />
+            <X
+              size={20}
+              color={theme.colors.text}
+            />
           </button>
         </div>
 
@@ -77,7 +85,17 @@ const DeleteModal = ({ isOpen, onClose }) => {
           </button>
 
           <button
-            className="flex-1 rounded-xl bg-red-500 py-3 font-semibold text-white transition hover:-translate-y-0.5"
+            onClick={onDelete}
+            className="
+              flex-1
+              rounded-xl
+              bg-red-500
+              py-3
+              font-semibold
+              text-white
+              transition
+              hover:-translate-y-0.5
+            "
           >
             Delete
           </button>
