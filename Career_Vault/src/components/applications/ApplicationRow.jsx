@@ -1,100 +1,201 @@
-import StatusBadge from "./StatusBadge";
-
+import { useState } from "react";
 import {
   MapPin,
   CalendarDays,
   Pencil,
   Trash2,
-  StickyNote,
+  Eye,
+  Briefcase,
+  IndianRupee,
 } from "lucide-react";
 
 import { useTheme } from "../../context/ThemeContext";
-
+import StatusBadge from "./StatusBadge";
+import ApplicationDetailsDrawer from "./ApplicationDetailsDrawer";
 
 const ApplicationRow = ({ application }) => {
   const { theme } = useTheme();
 
+  const [showDetails, setShowDetails] = useState(false);
+
   return (
-    <div
-      className="rounded-3xl border p-6 transition hover:-translate-y-1"
-      style={{
-        background: theme.colors.card,
-        borderColor: theme.colors.border,
-      }}
-    >
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        {/* Left */}
-        <div>
-          <h2
-            className="text-xl font-bold"
-            style={{
-              color: theme.colors.text,
-            }}
-          >
-            {application.company}
-          </h2>
+    <>
+      <div
+        className="
+          rounded-3xl
+          border
+          p-6
+          transition-all
+          duration-300
+          hover:-translate-y-1
+          hover:shadow-xl
+        "
+        style={{
+          background: theme.colors.card,
+          borderColor: theme.colors.border,
+        }}
+      >
+        {/* Top */}
 
-          <p
-            className="mt-1"
-            style={{
-              color: theme.colors.secondaryText,
-            }}
-          >
-            {application.role}
-          </p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h2
+              className="text-xl font-bold"
+              style={{
+                color: theme.colors.text,
+              }}
+            >
+              {application.company}
+            </h2>
 
-          <div
-            className="mt-4 flex flex-wrap gap-6 text-sm"
-            style={{
-              color: theme.colors.secondaryText,
-            }}
-          >
-            <span className="flex items-center gap-2">
-              <MapPin size={16} />
-              {application.location}
-            </span>
-
-            <span className="flex items-center gap-2">
-              <CalendarDays size={16} />
-              {application.date}
-            </span>
+            <p
+              className="mt-1"
+              style={{
+                color: theme.colors.secondaryText,
+              }}
+            >
+              {application.role}
+            </p>
           </div>
+
+          <StatusBadge status={application.status} />
         </div>
 
-        {/* Right */}
-        <div className="flex items-center gap-4">
-          <StatusBadge status={application.status} />
+        {/* Details */}
+
+        <div
+          className="
+            mt-6
+            flex
+            flex-wrap
+            items-center
+            gap-x-6
+            gap-y-3
+            text-sm
+          "
+          style={{
+            color: theme.colors.secondaryText,
+          }}
+        >
+          <span className="flex items-center gap-2">
+            <MapPin size={16} />
+            {application.location}
+          </span>
+
+          {application.workMode && (
+            <span className="flex items-center gap-2">
+              <Briefcase size={16} />
+              {application.workMode}
+            </span>
+          )}
+
+          {application.salary && (
+            <span className="flex items-center gap-2">
+              <IndianRupee size={16} />
+              {application.salary}
+            </span>
+          )}
+
+          <span className="flex items-center gap-2">
+            <CalendarDays size={16} />
+
+            {application.appliedDate || application.date}
+          </span>
+        </div>
+
+        {/* Skills */}
+
+        {application.skills &&
+          application.skills.length > 0 && (
+            <div className="mt-5 flex flex-wrap gap-2">
+              {application.skills.map((skill) => (
+                <span
+                  key={skill}
+                  className="rounded-full border px-3 py-1 text-xs font-medium"
+                  style={{
+                    background: theme.colors.background,
+                    borderColor: theme.colors.border,
+                    color: theme.colors.secondaryText,
+                  }}
+                >
+                  {skill}
+                </span>
+              ))}
+            </div>
+          )}
+
+        {/* Actions */}
+
+        <div
+          className="
+            mt-6
+            flex
+            justify-end
+            gap-3
+            border-t
+            pt-5
+          "
+          style={{
+            borderColor: theme.colors.border,
+          }}
+        >
+          {/* View Details */}
 
           <button
-            className="rounded-xl p-3 transition hover:scale-105"
+            onClick={() => setShowDetails(true)}
+            className="rounded-xl p-3 transition hover:scale-110"
             style={{
               background: theme.colors.background,
             }}
+            title="View Details"
           >
-            <StickyNote size={18} />
+            <Eye
+              size={18}
+              color={theme.colors.text}
+            />
           </button>
 
+          {/* Edit */}
+
           <button
-            className="rounded-xl p-3 transition hover:scale-105"
+            className="rounded-xl p-3 transition hover:scale-110"
             style={{
               background: theme.colors.background,
             }}
+            title="Edit Application"
           >
-            <Pencil size={18} />
+            <Pencil
+              size={18}
+              color={theme.colors.text}
+            />
           </button>
 
+          {/* Delete */}
+
           <button
-            className="rounded-xl p-3 transition hover:scale-105"
+            className="rounded-xl p-3 transition hover:scale-110"
             style={{
               background: "#EF444420",
-              color: "#EF4444",
             }}
+            title="Delete Application"
           >
-            <Trash2 size={18} />
+            <Trash2
+              size={18}
+              color="#EF4444"
+            />
           </button>
         </div>
       </div>
-    </div>
+
+      {/* Details Drawer */}
+
+      {showDetails && (
+        <ApplicationDetailsDrawer
+          application={application}
+          onClose={() => setShowDetails(false)}
+        />
+      )}
+    </>
   );
 };
 

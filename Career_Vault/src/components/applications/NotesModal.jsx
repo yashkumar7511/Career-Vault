@@ -7,10 +7,9 @@ const NotesModal = ({ isOpen, onClose, notes }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
       <div
-        className="w-full max-w-2xl rounded-3xl border p-8 shadow-2xl"
+        className="w-full max-w-2xl rounded-3xl border p-6 shadow-2xl sm:p-8"
         style={{
           background: theme.colors.card,
           borderColor: theme.colors.border,
@@ -19,16 +18,17 @@ const NotesModal = ({ isOpen, onClose, notes }) => {
         {/* Header */}
 
         <div className="mb-6 flex items-center justify-between">
-
           <div className="flex items-center gap-3">
-
             <div
               className="rounded-xl p-3"
               style={{
                 background: theme.colors.primary,
               }}
             >
-              <FileText className="text-white" size={22} />
+              <FileText
+                className="text-white"
+                size={22}
+              />
             </div>
 
             <div>
@@ -42,6 +42,7 @@ const NotesModal = ({ isOpen, onClose, notes }) => {
               </h2>
 
               <p
+                className="text-sm"
                 style={{
                   color: theme.colors.secondaryText,
                 }}
@@ -49,19 +50,20 @@ const NotesModal = ({ isOpen, onClose, notes }) => {
                 Personal notes about this application.
               </p>
             </div>
-
           </div>
 
           <button
             onClick={onClose}
-            className="rounded-xl p-3"
+            className="rounded-xl p-3 transition hover:scale-110"
             style={{
               background: theme.colors.background,
             }}
           >
-            <X size={20} color={theme.colors.text} />
+            <X
+              size={20}
+              color={theme.colors.text}
+            />
           </button>
-
         </div>
 
         {/* Notes */}
@@ -74,27 +76,25 @@ const NotesModal = ({ isOpen, onClose, notes }) => {
             color: theme.colors.text,
           }}
         >
-          {notes || "No notes added yet."}
+          <p className="leading-7">
+            {notes || "No notes added yet."}
+          </p>
         </div>
 
         {/* Footer */}
 
         <div className="mt-6 flex justify-end">
-
           <button
             onClick={onClose}
-            className="rounded-xl px-6 py-3 text-white"
+            className="rounded-xl px-6 py-3 font-semibold text-white transition hover:-translate-y-0.5"
             style={{
               background: theme.colors.primary,
             }}
           >
             Close
           </button>
-
         </div>
-
       </div>
-
     </div>
   );
 };

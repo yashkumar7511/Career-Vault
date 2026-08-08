@@ -47,11 +47,7 @@ const Sidebar = () => {
           title="Applications"
         />
 
-        <NavItem
-          to="/companies"
-          icon={Building2}
-          title="Companies"
-        />
+       
 
         <NavItem
           to="/analytics"

@@ -10,14 +10,16 @@ const ApplicationForm = () => {
   };
 
   return (
-    <form className="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 
       {/* Company */}
 
       <div>
         <label
           className="mb-2 block font-medium"
-          style={{ color: theme.colors.text }}
+          style={{
+            color: theme.colors.text,
+          }}
         >
           Company
         </label>
@@ -25,7 +27,7 @@ const ApplicationForm = () => {
         <input
           type="text"
           placeholder="Google"
-          className="w-full rounded-xl border p-3 outline-none"
+          className="w-full rounded-xl border p-3 outline-none transition"
           style={inputStyle}
         />
       </div>
@@ -35,7 +37,9 @@ const ApplicationForm = () => {
       <div>
         <label
           className="mb-2 block font-medium"
-          style={{ color: theme.colors.text }}
+          style={{
+            color: theme.colors.text,
+          }}
         >
           Role
         </label>
@@ -43,7 +47,7 @@ const ApplicationForm = () => {
         <input
           type="text"
           placeholder="Frontend Developer"
-          className="w-full rounded-xl border p-3 outline-none"
+          className="w-full rounded-xl border p-3 outline-none transition"
           style={inputStyle}
         />
       </div>
@@ -53,7 +57,9 @@ const ApplicationForm = () => {
       <div>
         <label
           className="mb-2 block font-medium"
-          style={{ color: theme.colors.text }}
+          style={{
+            color: theme.colors.text,
+          }}
         >
           Location
         </label>
@@ -61,7 +67,7 @@ const ApplicationForm = () => {
         <input
           type="text"
           placeholder="Bengaluru"
-          className="w-full rounded-xl border p-3 outline-none"
+          className="w-full rounded-xl border p-3 outline-none transition"
           style={inputStyle}
         />
       </div>
@@ -71,7 +77,9 @@ const ApplicationForm = () => {
       <div>
         <label
           className="mb-2 block font-medium"
-          style={{ color: theme.colors.text }}
+          style={{
+            color: theme.colors.text,
+          }}
         >
           Status
         </label>
@@ -79,6 +87,7 @@ const ApplicationForm = () => {
         <select
           className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
+          defaultValue="Applied"
         >
           <option>Applied</option>
           <option>Interview</option>
@@ -87,12 +96,37 @@ const ApplicationForm = () => {
         </select>
       </div>
 
+      {/* Work Mode */}
+
+      <div>
+        <label
+          className="mb-2 block font-medium"
+          style={{
+            color: theme.colors.text,
+          }}
+        >
+          Work Mode
+        </label>
+
+        <select
+          className="w-full rounded-xl border p-3 outline-none"
+          style={inputStyle}
+          defaultValue="Remote"
+        >
+          <option>Remote</option>
+          <option>Hybrid</option>
+          <option>Onsite</option>
+        </select>
+      </div>
+
       {/* Applied Date */}
 
       <div>
         <label
           className="mb-2 block font-medium"
-          style={{ color: theme.colors.text }}
+          style={{
+            color: theme.colors.text,
+          }}
         >
           Applied Date
         </label>
@@ -109,17 +143,48 @@ const ApplicationForm = () => {
       <div>
         <label
           className="mb-2 block font-medium"
-          style={{ color: theme.colors.text }}
+          style={{
+            color: theme.colors.text,
+          }}
         >
-          Salary (Optional)
+          Salary
         </label>
 
         <input
-          type="number"
-          placeholder="1200000"
+          type="text"
+          placeholder="18 LPA"
           className="w-full rounded-xl border p-3 outline-none"
           style={inputStyle}
         />
+      </div>
+
+      {/* Skills */}
+
+      <div>
+        <label
+          className="mb-2 block font-medium"
+          style={{
+            color: theme.colors.text,
+          }}
+        >
+          Skills
+        </label>
+
+        <input
+          type="text"
+          placeholder="React, JavaScript, Tailwind"
+          className="w-full rounded-xl border p-3 outline-none"
+          style={inputStyle}
+        />
+
+        <p
+          className="mt-2 text-xs"
+          style={{
+            color: theme.colors.secondaryText,
+          }}
+        >
+          Separate skills with commas.
+        </p>
       </div>
 
       {/* Job URL */}
@@ -127,7 +192,9 @@ const ApplicationForm = () => {
       <div className="md:col-span-2">
         <label
           className="mb-2 block font-medium"
-          style={{ color: theme.colors.text }}
+          style={{
+            color: theme.colors.text,
+          }}
         >
           Job URL
         </label>
@@ -145,7 +212,9 @@ const ApplicationForm = () => {
       <div className="md:col-span-2">
         <label
           className="mb-2 block font-medium"
-          style={{ color: theme.colors.text }}
+          style={{
+            color: theme.colors.text,
+          }}
         >
           Notes
         </label>
@@ -158,7 +227,7 @@ const ApplicationForm = () => {
         />
       </div>
 
-    </form>
+    </div>
   );
 };
 

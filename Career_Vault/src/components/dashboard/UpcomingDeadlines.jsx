@@ -1,96 +1,83 @@
-import {
-  CalendarClock,
-} from "lucide-react";
-
+import { CalendarDays } from "lucide-react";
+import { deadlines } from "../../data/dashboardData";
 import { useTheme } from "../../context/ThemeContext";
 
-import { deadlines } from "../../data/dashboardData";
-
 const UpcomingDeadlines = () => {
-
   const { theme } = useTheme();
 
   return (
-
     <div
-      className="rounded-3xl border p-7"
+      className="rounded-3xl border p-6"
       style={{
         background: theme.colors.card,
         borderColor: theme.colors.border,
       }}
     >
+      <h2
+        className="mb-6 text-2xl font-bold"
+        style={{
+          color: theme.colors.text,
+        }}
+      >
+        Upcoming Deadlines
+      </h2>
 
-      <div className="mb-8 flex items-center justify-between">
-
-        <h2
-          className="text-2xl font-bold"
-          style={{
-            color: theme.colors.text,
-          }}
-        >
-          Upcoming Deadlines
-        </h2>
-
-      </div>
-
-      <div className="space-y-5">
-
+      <div className="space-y-4">
         {deadlines.map((item) => (
-
           <div
             key={item.id}
-            className="flex items-center justify-between rounded-2xl border p-5"
+            className="flex items-center justify-between rounded-2xl border p-4"
             style={{
+              background: theme.colors.background,
               borderColor: theme.colors.border,
             }}
           >
-
-            <div>
-
-              <h3
-                className="font-semibold"
+            <div className="flex items-center gap-3">
+              <div
+                className="rounded-xl p-3"
                 style={{
-                  color: theme.colors.text,
+                  background: `${theme.colors.primary}20`,
                 }}
               >
-                {item.company}
-              </h3>
+                <CalendarDays
+                  size={20}
+                  color={theme.colors.primary}
+                />
+              </div>
 
-              <p
-                style={{
-                  color: theme.colors.secondaryText,
-                }}
-              >
-                Apply before
-              </p>
+              <div>
+                <h3
+                  className="font-semibold"
+                  style={{
+                    color: theme.colors.text,
+                  }}
+                >
+                  {item.company}
+                </h3>
 
+                <p
+                  className="text-sm"
+                  style={{
+                    color: theme.colors.secondaryText,
+                  }}
+                >
+                  Application deadline
+                </p>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
-
-              <CalendarClock
-                size={18}
-                color={theme.colors.primary}
-              />
-
-              <span
-                style={{
-                  color: theme.colors.text,
-                }}
-              >
-                {item.deadline}
-              </span>
-
-            </div>
-
+            <span
+              className="text-sm font-semibold"
+              style={{
+                color: theme.colors.primary,
+              }}
+            >
+              {item.deadline}
+            </span>
           </div>
-
         ))}
-
       </div>
-
     </div>
-
   );
 };
 

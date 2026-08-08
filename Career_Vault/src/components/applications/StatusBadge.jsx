@@ -1,22 +1,39 @@
-import { useTheme } from "../../context/ThemeContext";
+const statusStyles = {
+  Applied: {
+    color: "#3B82F6",
+    background: "#3B82F620",
+    border: "#3B82F640",
+  },
 
-const statusColors = {
-  Applied: "#3B82F6",
-  Interview: "#F59E0B",
-  Offer: "#10B981",
-  Rejected: "#EF4444",
+  Interview: {
+    color: "#F59E0B",
+    background: "#F59E0B20",
+    border: "#F59E0B40",
+  },
+
+  Offer: {
+    color: "#10B981",
+    background: "#10B98120",
+    border: "#10B98140",
+  },
+
+  Rejected: {
+    color: "#EF4444",
+    background: "#EF444420",
+    border: "#EF444440",
+  },
 };
 
 const StatusBadge = ({ status }) => {
-  const { theme } = useTheme();
+  const style = statusStyles[status] || statusStyles.Applied;
 
   return (
     <span
-      className="rounded-full px-4 py-2 text-sm font-semibold"
+      className="rounded-full border px-4 py-2 text-sm font-semibold"
       style={{
-        background: `${statusColors[status]}20`,
-        color: statusColors[status],
-        border: `1px solid ${statusColors[status]}40`,
+        color: style.color,
+        background: style.background,
+        borderColor: style.border,
       }}
     >
       {status}
