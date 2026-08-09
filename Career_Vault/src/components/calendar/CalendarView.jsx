@@ -3,7 +3,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CalendarDays,
-  Plus,
+  
 } from "lucide-react";
 
 import { useTheme } from "../../context/ThemeContext";
@@ -134,29 +134,7 @@ const CalendarView = () => {
           </p>
         </div>
 
-        <button
-          type="button"
-          className="
-            flex
-            items-center
-            justify-center
-            gap-2
-            rounded-xl
-            px-5
-            py-3
-            font-semibold
-            text-white
-            transition
-            hover:scale-105
-          "
-          style={{
-            background: theme.colors.primary,
-          }}
-        >
-          <Plus size={19} />
-          Add Event
-        </button>
-
+       
       </div>
 
       {/* Calendar */}

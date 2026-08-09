@@ -1,5 +1,7 @@
+import CalendarView from "../components/calendar/CalendarView";
+
 const Calendar = () => {
-  return <h1>Calendar</h1>;
+  return <CalendarView />;
 };
 
 export default Calendar;

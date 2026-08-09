@@ -18,6 +18,8 @@ const AddApplicationModal = ({ isOpen, onClose }) => {
     skills: "",
     jobUrl: "",
     notes: "",
+    interviewDate: "",
+    interviewTime: "",
   });
 
   if (!isOpen) return null;
@@ -271,6 +273,46 @@ const AddApplicationModal = ({ isOpen, onClose }) => {
                   style={inputStyle}
                 />
               </div>
+
+              {/* Interview Date */}
+
+<div>
+  <label
+    className="mb-2 block text-sm font-medium"
+    style={{ color: theme.colors.text }}
+  >
+    Interview Date
+  </label>
+
+  <input
+    name="interviewDate"
+    value={formData.interviewDate}
+    onChange={handleChange}
+    type="date"
+    className="w-full rounded-xl border px-4 py-3 outline-none"
+    style={inputStyle}
+  />
+</div>
+
+{/* Interview Time */}
+
+<div>
+  <label
+    className="mb-2 block text-sm font-medium"
+    style={{ color: theme.colors.text }}
+  >
+    Interview Time
+  </label>
+
+  <input
+    name="interviewTime"
+    value={formData.interviewTime}
+    onChange={handleChange}
+    type="time"
+    className="w-full rounded-xl border px-4 py-3 outline-none"
+    style={inputStyle}
+  />
+</div>
 
               {/* Skills */}
 

@@ -16,15 +16,42 @@ const AppRoutes = () => {
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/applications" element={<Applications />} />
-        <Route path="/companies" element={<Companies />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/calendar" element={<Calendar />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/settings" element={<Settings />} />
-      </Route>
 
-      <Route path="*" element={<NotFound />} />
+        <Route
+          path="/applications"
+          element={<Applications />}
+        />
+
+        <Route
+          path="/companies"
+          element={<Companies />}
+        />
+
+        <Route
+          path="/analytics"
+          element={<Analytics />}
+        />
+
+        <Route
+          path="/calendar"
+          element={<Calendar />}
+        />
+
+        <Route
+          path="/wishlist"
+          element={<Wishlist />}
+        />
+
+        <Route
+          path="/settings"
+          element={<Settings />}
+        />
+
+        <Route
+          path="*"
+          element={<NotFound />}
+        />
+      </Route>
     </Routes>
   );
 };

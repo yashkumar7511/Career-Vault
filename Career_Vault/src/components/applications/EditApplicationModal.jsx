@@ -25,6 +25,8 @@ const EditApplicationModal = ({
     skills: "",
     jobUrl: "",
     notes: "",
+    interviewDate: "",
+    interviewTime: "",
   });
 
   useEffect(() => {
@@ -42,6 +44,8 @@ const EditApplicationModal = ({
           : application.skills || "",
         jobUrl: application.jobUrl || "",
         notes: application.notes || "",
+         interviewDate: "",
+        interviewTime: "",
       });
     }
   }, [application]);
