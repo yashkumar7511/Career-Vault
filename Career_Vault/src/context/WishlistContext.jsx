@@ -1,115 +1,284 @@
 import {
   createContext,
   useContext,
+  useEffect,
+  useState,
 } from "react";
 
-import useLocalStorage from "../hooks/useLocalStorage";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
+
+import { db } from "../firebase/firebase";
+import { useAuth } from "./AuthContext";
 
 const WishlistContext = createContext(null);
-
-const initialWishlist = [
-  {
-    id: 1,
-    company: "Adobe",
-    role: "Frontend Developer",
-    location: "Noida",
-    workMode: "Hybrid",
-    salary: "14 LPA",
-    skills: ["React", "JavaScript", "CSS"],
-    priority: "High",
-    jobUrl: "https://adobe.com",
-    addedDate: "2026-08-12",
-    notes: "Good frontend opportunity",
-  },
-
-  {
-    id: 2,
-    company: "Netflix",
-    role: "UI Engineer",
-    location: "Remote",
-    workMode: "Remote",
-    salary: "20 LPA",
-    skills: ["React", "TypeScript", "CSS"],
-    priority: "Medium",
-    jobUrl: "https://netflix.com",
-    addedDate: "2026-08-10",
-    notes: "Check requirements before applying",
-  },
-
-  {
-    id: 3,
-    company: "Uber",
-    role: "Software Engineer",
-    location: "Bengaluru",
-    workMode: "Onsite",
-    salary: "18 LPA",
-    skills: ["React", "Node.js", "Git"],
-    priority: "Low",
-    jobUrl: "https://uber.com",
-    addedDate: "2026-08-08",
-    notes: "",
-  },
-];
 
 export const WishlistProvider = ({
   children,
 }) => {
-  const [wishlist, setWishlist] =
-    useLocalStorage(
-      "careerVaultWishlist",
-      initialWishlist
+  const {
+    user,
+    loading: authLoading,
+  } = useAuth();
+
+  const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  /*
+   * Firestore path:
+   *
+   * users/{userId}/wishlist
+   */
+
+  useEffect(() => {
+    // Wait for Firebase Authentication
+    if (authLoading) {
+      return;
+    }
+
+    // User is logged out
+    if (!user) {
+      setWishlist([]);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+
+    const wishlistRef = collection(
+      db,
+      "users",
+      user.uid,
+      "wishlist"
     );
 
-  // ADD WISHLIST
-  const addWishlist = (job) => {
-    const newJob = {
-      ...job,
-      id: Date.now(),
-      addedDate:
-        job.addedDate ||
-        new Date()
-          .toISOString()
-          .split("T")[0],
-    };
+    /*
+     * Listen for real-time wishlist changes
+     */
 
-    setWishlist((prev) => [
-      newJob,
-      ...prev,
-    ]);
+    const unsubscribe = onSnapshot(
+      wishlistRef,
+      (snapshot) => {
+        const wishlistData =
+          snapshot.docs.map((document) => ({
+            ...document.data(),
+            id: document.id,
+          }));
+
+        /*
+         * Newest items first
+         */
+
+        wishlistData.sort((a, b) => {
+          const dateA =
+            a.createdAt?.toMillis?.() ||
+            new Date(
+              a.addedDate || 0
+            ).getTime() ||
+            0;
+
+          const dateB =
+            b.createdAt?.toMillis?.() ||
+            new Date(
+              b.addedDate || 0
+            ).getTime() ||
+            0;
+
+          return dateB - dateA;
+        });
+
+        setWishlist(wishlistData);
+        setLoading(false);
+      },
+      (error) => {
+        console.error(
+          "Error loading wishlist:",
+          error
+        );
+
+        setWishlist([]);
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
+  }, [user, authLoading]);
+
+  /*
+   * ADD WISHLIST
+   */
+
+  const addWishlist = async (job) => {
+    if (!user) {
+      throw new Error(
+        "You must be logged in to add a wishlist job."
+      );
+    }
+
+    try {
+      const wishlistRef = collection(
+        db,
+        "users",
+        user.uid,
+        "wishlist"
+      );
+
+      const wishlistItemRef = doc(
+        wishlistRef
+      );
+
+      const newJob = {
+        ...job,
+        id: wishlistItemRef.id,
+        addedDate:
+          job.addedDate ||
+          new Date()
+            .toISOString()
+            .split("T")[0],
+        createdAt: serverTimestamp(),
+      };
+
+      await setDoc(
+        wishlistItemRef,
+        newJob
+      );
+
+      return newJob;
+    } catch (error) {
+      console.error(
+        "Error adding wishlist job:",
+        error
+      );
+
+      throw error;
+    }
   };
 
-  // UPDATE WISHLIST
-  const updateWishlist = (
+  /*
+   * UPDATE WISHLIST
+   */
+
+  const updateWishlist = async (
     id,
     updatedJob
   ) => {
-    setWishlist((prev) =>
-      prev.map((job) =>
-        job.id === id
-          ? {
-              ...job,
-              ...updatedJob,
-            }
-          : job
-      )
-    );
+    if (!user) {
+      throw new Error(
+        "You must be logged in to update a wishlist job."
+      );
+    }
+
+    try {
+      const wishlistItemRef = doc(
+        db,
+        "users",
+        user.uid,
+        "wishlist",
+        id
+      );
+
+      await setDoc(
+        wishlistItemRef,
+        updatedJob,
+        {
+          merge: true,
+        }
+      );
+    } catch (error) {
+      console.error(
+        "Error updating wishlist job:",
+        error
+      );
+
+      throw error;
+    }
   };
 
-  // DELETE WISHLIST
-  const deleteWishlist = (id) => {
-    setWishlist((prev) =>
-      prev.filter(
-        (job) => job.id !== id
-      )
-    );
+  /*
+   * DELETE WISHLIST
+   */
+
+  const deleteWishlist = async (id) => {
+    if (!user) {
+      throw new Error(
+        "You must be logged in to delete a wishlist job."
+      );
+    }
+
+    try {
+      const wishlistItemRef = doc(
+        db,
+        "users",
+        user.uid,
+        "wishlist",
+        id
+      );
+
+      await deleteDoc(
+        wishlistItemRef
+      );
+    } catch (error) {
+      console.error(
+        "Error deleting wishlist job:",
+        error
+      );
+
+      throw error;
+    }
   };
 
-  // CLEAR ALL WISHLIST
-  const clearWishlist = () => {
-    setWishlist([]);
+  /*
+   * CLEAR ALL WISHLIST
+   */
+
+  const clearWishlist = async () => {
+    if (!user) {
+      throw new Error(
+        "You must be logged in to clear wishlist."
+      );
+    }
+
+    try {
+      const wishlistRef = collection(
+        db,
+        "users",
+        user.uid,
+        "wishlist"
+      );
+
+      const snapshot = await getDocs(
+        wishlistRef
+      );
+
+      const deletePromises =
+        snapshot.docs.map((document) =>
+          deleteDoc(document.ref)
+        );
+
+      await Promise.all(
+        deletePromises
+      );
+    } catch (error) {
+      console.error(
+        "Error clearing wishlist:",
+        error
+      );
+
+      throw error;
+    }
   };
 
-  // GET SINGLE WISHLIST ITEM
+  /*
+   * GET SINGLE WISHLIST ITEM
+   */
+
   const getWishlistItem = (id) => {
     return wishlist.find(
       (job) => job.id === id
@@ -120,6 +289,7 @@ export const WishlistProvider = ({
     <WishlistContext.Provider
       value={{
         wishlist,
+        loading,
         addWishlist,
         updateWishlist,
         deleteWishlist,
