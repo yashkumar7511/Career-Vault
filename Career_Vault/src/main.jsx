@@ -6,6 +6,7 @@ import App from "./App";
 import "./index.css";
 
 import { ThemeProvider } from "./context/ThemeContext";
+import { AuthProvider } from "./context/AuthContext";
 import { ApplicationProvider } from "./context/ApplicationContext";
 import { WishlistProvider } from "./context/WishlistContext";
 import { SettingsProvider } from "./context/SettingsContext";
@@ -18,19 +19,23 @@ ReactDOM.createRoot(
 
       <ThemeProvider>
 
-        <ApplicationProvider>
+        <AuthProvider>
 
-          <WishlistProvider>
+          <ApplicationProvider>
 
-           <SettingsProvider>
+            <WishlistProvider>
 
-            <App />
+              <SettingsProvider>
 
-            </SettingsProvider>
+                <App />
 
-          </WishlistProvider>
+              </SettingsProvider>
 
-        </ApplicationProvider>
+            </WishlistProvider>
+
+          </ApplicationProvider>
+
+        </AuthProvider>
 
       </ThemeProvider>
 

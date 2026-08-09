@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
 
+import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Applications from "../pages/Applications";
 import Companies from "../pages/Companies";
@@ -14,8 +15,22 @@ import NotFound from "../pages/NotFound";
 const AppRoutes = () => {
   return (
     <Routes>
+
+      {/* Login */}
+
+      <Route
+        path="/login"
+        element={<Login />}
+      />
+
+      {/* Main Application */}
+
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Dashboard />} />
+
+        <Route
+          path="/"
+          element={<Dashboard />}
+        />
 
         <Route
           path="/applications"
@@ -47,11 +62,15 @@ const AppRoutes = () => {
           element={<Settings />}
         />
 
-        <Route
-          path="*"
-          element={<NotFound />}
-        />
       </Route>
+
+      {/* 404 */}
+
+      <Route
+        path="*"
+        element={<NotFound />}
+      />
+
     </Routes>
   );
 };
