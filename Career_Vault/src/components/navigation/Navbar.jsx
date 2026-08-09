@@ -1,11 +1,17 @@
+import { useState } from "react";
+
 import {
   Bell,
   Moon,
   Sun,
+  LogOut,
+  User,
 } from "lucide-react";
 
+import { useNavigate } from "react-router-dom";
+
 import { useTheme } from "../../context/ThemeContext";
-import { useSettings } from "../../context/SettingsContext";
+import { useAuth } from "../../context/AuthContext";
 
 const Navbar = () => {
   const {
@@ -14,11 +20,42 @@ const Navbar = () => {
     toggleTheme,
   } = useTheme();
 
-  const { settings } = useSettings();
+  const {
+    user,
+    logout,
+  } = useAuth();
+
+  const navigate = useNavigate();
+
+  const [showProfile, setShowProfile] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+
+      setShowProfile(false);
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
+  const userName =
+    user?.displayName || "User";
+
+  const userEmail =
+    user?.email || "";
+
+  const userPhoto =
+    user?.photoURL || "";
+
+  const firstLetter =
+    userName.charAt(0).toUpperCase();
 
   return (
     <header
-      className="flex items-center justify-between border-b px-10 py-5"
+      className="relative flex items-center justify-between border-b px-10 py-5"
       style={{
         background: theme.colors.background,
         borderColor: theme.colors.border,
@@ -28,7 +65,6 @@ const Navbar = () => {
       {/* Left */}
 
       <div>
-
         <h1
           className="text-4xl font-bold"
           style={{
@@ -46,7 +82,6 @@ const Navbar = () => {
         >
           Welcome back 👋
         </p>
-
       </div>
 
       {/* Right */}
@@ -57,14 +92,7 @@ const Navbar = () => {
 
         <button
           type="button"
-          className="
-            flex
-            h-12
-            w-12
-            items-center
-            justify-center
-            rounded-full
-          "
+          className="flex h-12 w-12 items-center justify-center rounded-full"
           style={{
             background: theme.colors.card,
           }}
@@ -82,15 +110,7 @@ const Navbar = () => {
         <button
           type="button"
           onClick={toggleTheme}
-          className="
-            flex
-            h-12
-            w-12
-            items-center
-            justify-center
-            rounded-full
-            text-white
-          "
+          className="flex h-12 w-12 items-center justify-center rounded-full text-white"
           style={{
             background: theme.colors.primary,
           }}
@@ -104,63 +124,173 @@ const Navbar = () => {
 
         {/* Profile */}
 
-        <div className="flex items-center gap-4">
+        <div className="relative">
 
-          {/* Avatar */}
-
-          <div
-            className="
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-full
-              text-lg
-              font-bold
-              text-white
-            "
-            style={{
-              background:
-                theme.colors.primary,
-            }}
+          <button
+            type="button"
+            onClick={() =>
+              setShowProfile(
+                (previous) => !previous
+              )
+            }
+            className="flex items-center gap-4 rounded-2xl p-2 transition hover:opacity-80"
           >
-            {settings.name
-              ? settings.name
-                  .charAt(0)
-                  .toUpperCase()
-              : "Y"}
-          </div>
 
-          {/* Name + Job Title */}
+            {/* Profile Image */}
 
-          <div>
+            {userPhoto ? (
+              <img
+                src={userPhoto}
+                alt={userName}
+                className="h-12 w-12 rounded-full object-cover"
+              />
+            ) : (
+              <div
+                className="flex h-12 w-12 items-center justify-center rounded-full text-lg font-bold text-white"
+                style={{
+                  background:
+                    theme.colors.primary,
+                }}
+              >
+                {firstLetter}
+              </div>
+            )}
 
-            <h3
-              className="font-semibold"
+            {/* User Information */}
+
+            <div className="text-left">
+
+              <h3
+                className="font-semibold"
+                style={{
+                  color: theme.colors.text,
+                }}
+              >
+                {userName}
+              </h3>
+
+              <p
+                className="max-w-[180px] truncate text-sm"
+                style={{
+                  color:
+                    theme.colors.secondaryText,
+                }}
+              >
+                {userEmail}
+              </p>
+
+            </div>
+
+          </button>
+
+          {/* Profile Dropdown */}
+
+          {showProfile && (
+            <div
+              className="absolute right-0 top-16 z-50 w-64 rounded-2xl border p-3 shadow-2xl"
               style={{
-                color: theme.colors.text,
+                background:
+                  theme.colors.card,
+                borderColor:
+                  theme.colors.border,
               }}
             >
-              {settings.name}
-            </h3>
 
-            <p
-              className="text-sm"
-              style={{
-                color:
-                  theme.colors.secondaryText,
-              }}
-            >
-              {settings.jobTitle}
-            </p>
+              {/* User */}
 
-          </div>
+              <div
+                className="mb-2 border-b pb-3"
+                style={{
+                  borderColor:
+                    theme.colors.border,
+                }}
+              >
+
+                <div className="flex items-center gap-3">
+
+                  {userPhoto ? (
+                    <img
+                      src={userPhoto}
+                      alt={userName}
+                      className="h-10 w-10 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div
+                      className="flex h-10 w-10 items-center justify-center rounded-full font-semibold text-white"
+                      style={{
+                        background:
+                          theme.colors.primary,
+                      }}
+                    >
+                      {firstLetter}
+                    </div>
+                  )}
+
+                  <div className="min-w-0">
+
+                    <p
+                      className="truncate font-semibold"
+                      style={{
+                        color:
+                          theme.colors.text,
+                      }}
+                    >
+                      {userName}
+                    </p>
+
+                    <p
+                      className="truncate text-xs"
+                      style={{
+                        color:
+                          theme.colors.secondaryText,
+                      }}
+                    >
+                      {userEmail}
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              {/* Profile */}
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowProfile(false);
+                  navigate("/settings");
+                }}
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm transition hover:opacity-80"
+                style={{
+                  color: theme.colors.text,
+                }}
+              >
+                <User size={18} />
+                Profile & Settings
+              </button>
+
+              {/* Logout */}
+
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition hover:bg-red-500/10"
+                style={{
+                  color: "#EF4444",
+                }}
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+
+            </div>
+          )}
 
         </div>
 
       </div>
-
     </header>
   );
 };
