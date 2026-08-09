@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 
 import { useTheme } from "../../context/ThemeContext";
+import { useSettings } from "../../context/SettingsContext";
 
 const Navbar = () => {
   const {
@@ -12,6 +13,8 @@ const Navbar = () => {
     darkMode,
     toggleTheme,
   } = useTheme();
+
+  const { settings } = useSettings();
 
   return (
     <header
@@ -21,9 +24,11 @@ const Navbar = () => {
         borderColor: theme.colors.border,
       }}
     >
+
       {/* Left */}
 
       <div>
+
         <h1
           className="text-4xl font-bold"
           style={{
@@ -41,6 +46,7 @@ const Navbar = () => {
         >
           Welcome back 👋
         </p>
+
       </div>
 
       {/* Right */}
@@ -96,9 +102,11 @@ const Navbar = () => {
           )}
         </button>
 
-        {/* Avatar */}
+        {/* Profile */}
 
         <div className="flex items-center gap-4">
+
+          {/* Avatar */}
 
           <div
             className="
@@ -113,35 +121,46 @@ const Navbar = () => {
               text-white
             "
             style={{
-              background: theme.colors.primary,
+              background:
+                theme.colors.primary,
             }}
           >
-            Y
+            {settings.name
+              ? settings.name
+                  .charAt(0)
+                  .toUpperCase()
+              : "Y"}
           </div>
 
+          {/* Name + Job Title */}
+
           <div>
+
             <h3
               className="font-semibold"
               style={{
                 color: theme.colors.text,
               }}
             >
-              Yash
+              {settings.name}
             </h3>
 
             <p
               className="text-sm"
               style={{
-                color: theme.colors.secondaryText,
+                color:
+                  theme.colors.secondaryText,
               }}
             >
-              Frontend Developer
+              {settings.jobTitle}
             </p>
+
           </div>
 
         </div>
 
       </div>
+
     </header>
   );
 };

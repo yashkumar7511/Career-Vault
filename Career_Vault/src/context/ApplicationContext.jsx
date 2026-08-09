@@ -1,12 +1,25 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+} from "react";
+
 import { recentApplications } from "../data/dashboardData";
+import useLocalStorage from "../hooks/useLocalStorage";
 
-const ApplicationContext = createContext();
+const ApplicationContext =
+  createContext(null);
 
-export const ApplicationProvider = ({ children }) => {
-  const [applications, setApplications] = useState(recentApplications);
+export const ApplicationProvider = ({
+  children,
+}) => {
+  const [
+    applications,
+    setApplications,
+  ] = useLocalStorage(
+    "careerVaultApplications",
+    recentApplications
+  );
 
-  // ADD APPLICATION
   const addApplication = (application) => {
     const newApplication = {
       ...application,
@@ -19,7 +32,6 @@ export const ApplicationProvider = ({ children }) => {
     ]);
   };
 
-  // UPDATE APPLICATION
   const updateApplication = (
     id,
     updatedApplication
@@ -36,56 +48,27 @@ export const ApplicationProvider = ({ children }) => {
     );
   };
 
-  // DELETE APPLICATION
   const deleteApplication = (id) => {
     setApplications((prev) =>
       prev.filter(
-        (application) => application.id !== id
+        (application) =>
+          application.id !== id
       )
     );
   };
 
-  // LIVE STATISTICS
-  const stats = useMemo(() => {
-    return {
-      applications: applications.length,
-
-      interviews: applications.filter(
-        (application) =>
-          application.status === "Interview"
-      ).length,
-
-      offers: applications.filter(
-        (application) =>
-          application.status === "Offer"
-      ).length,
-
-      rejected: applications.filter(
-        (application) =>
-          application.status === "Rejected"
-      ).length,
-
-      applied: applications.filter(
-        (application) =>
-          application.status === "Applied"
-      ).length,
-
-       wishlist: applications.filter(
-      (application) =>
-        application.status === "Wishlist"
-    ).len
-
-    };
-  }, [applications]);
+  const clearApplications = () => {
+    setApplications([]);
+  };
 
   return (
     <ApplicationContext.Provider
       value={{
         applications,
-        stats,
         addApplication,
         updateApplication,
         deleteApplication,
+        clearApplications,
       }}
     >
       {children}
@@ -94,7 +77,8 @@ export const ApplicationProvider = ({ children }) => {
 };
 
 export const useApplications = () => {
-  const context = useContext(ApplicationContext);
+  const context =
+    useContext(ApplicationContext);
 
   if (!context) {
     throw new Error(
