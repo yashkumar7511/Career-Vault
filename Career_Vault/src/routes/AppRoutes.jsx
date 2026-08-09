@@ -2,6 +2,8 @@ import { Routes, Route } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
 
+import ProtectedRoute from "../components/auth/ProtectedRoute";
+
 import Login from "../pages/Login";
 import Dashboard from "../pages/Dashboard";
 import Applications from "../pages/Applications";
@@ -16,51 +18,55 @@ const AppRoutes = () => {
   return (
     <Routes>
 
-      {/* Login */}
+      {/* Public Route */}
 
       <Route
         path="/login"
         element={<Login />}
       />
 
-      {/* Main Application */}
+      {/* Protected Routes */}
 
-      <Route element={<MainLayout />}>
+      <Route element={<ProtectedRoute />}>
 
-        <Route
-          path="/"
-          element={<Dashboard />}
-        />
+        <Route element={<MainLayout />}>
 
-        <Route
-          path="/applications"
-          element={<Applications />}
-        />
+          <Route
+            path="/"
+            element={<Dashboard />}
+          />
 
-        <Route
-          path="/companies"
-          element={<Companies />}
-        />
+          <Route
+            path="/applications"
+            element={<Applications />}
+          />
 
-        <Route
-          path="/analytics"
-          element={<Analytics />}
-        />
+          <Route
+            path="/companies"
+            element={<Companies />}
+          />
 
-        <Route
-          path="/calendar"
-          element={<Calendar />}
-        />
+          <Route
+            path="/analytics"
+            element={<Analytics />}
+          />
 
-        <Route
-          path="/wishlist"
-          element={<Wishlist />}
-        />
+          <Route
+            path="/calendar"
+            element={<Calendar />}
+          />
 
-        <Route
-          path="/settings"
-          element={<Settings />}
-        />
+          <Route
+            path="/wishlist"
+            element={<Wishlist />}
+          />
+
+          <Route
+            path="/settings"
+            element={<Settings />}
+          />
+
+        </Route>
 
       </Route>
 
